@@ -1,59 +1,82 @@
+// 14336번: 이모티콘
+// 모르겠다 ......
+/*
+
+2<=S<=1000
+
+*/
+
 #include <iostream>
 #include <queue>
-#include <algorithm>
-#include <vector>
-#include <tuple>
-
 using namespace std;
 
-//이번 문제는 pair 로 풀기에는 너무 복잡해진다.
-//tuple 자료형을 사용해서 현재 이모티콘 개수 , 클립보드 , 시간초 이렇게 세개를 한번에 다뤄서 문제를 풀어야 편하게 풀 수 있다.
-//그게 아니라면 해당 지점에 도착했을때의 클립보드 별로 나눠야하기때문에 2차원 벡터를 사용해서 방문 여부를 파악해줘야한다.
+int s;
 
-int main()
+int dist[2001][2001]; // 넉넉하게 2000으로함.
+bool che_visit[2001][2001];
+queue<pair<int, int>> q;
+
+void bfs()
 {
-    ios::sync_with_stdio(false);
-    cin.tie(NULL);
-    int n;
 
-    cin >> n;
-
-    vector<bool> visit(3001, false);
-
-    queue<tuple<int, int, int>> q;
-
-    q.push({1, 0, 0});
+    dist[1][0] = 0;
+    che_visit[1][0] = true;
+    q.push(make_pair(1, 0));
 
     while (!q.empty())
     {
-
-        auto qCh = q.front();
-        int cur = get<0>(qCh);
-        int prev = get<1>(qCh);
-        int third = get<2>(qCh);
+        int cur_display = q.front().first;
+        int cur_clip = q.front().second;
         q.pop();
 
-        if (cur == n)
+        for (int i = 0; i < 3; i++)
         {
-            cout << third;
-            return 0;
-        }
+            int next_display, next_clip;
 
-        if (!visit[cur])
-        {
-            visit[cur] = 1;
-            q.push({cur, cur, third + 1});
-        }
+            if (i == 0)
+            { // 1.화면에 있는 이모티콘을 모두 복사해서 클립보드에 저장 (a,b)->(a,a)
+                next_display = cur_display;
+                next_clip = cur_display;
+            }
+            else if (i == 1)
+            { // 2. 클립보드에 있는 모든 이모티콘을 화면에 붙여넣기 한다 (a,b)->(a+b,b)
+                next_display = cur_display + cur_clip;
+                next_clip = cur_clip;
+            }
+            else
+            { // 3. 화면에 있는 이모티콘 중 하나를 삭제한다. (a,b)->(a-1,b)
+                next_display = cur_display - 1;
+                next_clip = cur_clip;
+            }
 
-        if (cur + prev <= 3000)
-        {
-            q.push({cur + prev, prev, third + 1});
-        }
-
-        if (cur - 1 >= 0)
-        {
-            q.push({cur - 1, prev, third + 1});
+            if (next_display >= 0 && next_clip >= 0 && next_display <= 2000 && next_clip <= 2000)
+            {
+                if (che_visit[next_display][next_clip] == false)
+                {
+                    dist[next_display][next_clip] = dist[cur_display][cur_clip] + 1;
+                    che_visit[next_display][next_clip] = true;
+                    q.push(make_pair(next_display, next_clip));
+                }
+            }
         }
     }
-    return 0;
+}
+
+int main()
+{
+    cin >> s;
+    bfs();
+    int answer = -1;
+    for (int i = 0; i < 2000; i++)
+    {
+        if (che_visit[s][i] == true)
+        {
+            if (answer == -1 || answer > dist[s][i])
+            {
+                answer = dist[s][i];
+            }
+        }
+    }
+
+    cout << answer << "\n";
 }
