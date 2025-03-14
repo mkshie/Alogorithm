@@ -9,9 +9,9 @@ using namespace std;
 bool arr[1000001] = {false};
 
 void check_odd(){
-    for (int i = 2; i * i < 1000001; i++){
-        if(!arr[i]){
-            for (int j = 2; i * j < 1000001; j++)
+    for (int i = 2; i * i < 1000001; i++){ // 제곱근까지만 판별해도 된다는걸 기억하자
+        if(!arr[i]){ //소수인 애들만 판별하자 만약에 짝수라면 이미 2 의 배수로 판별이 이미 되어있음
+            for (int j = 2; i * j < 1000001; j++) 
             {
                 arr[i * j] = true; // 소수를 에라토스테네스의 체로 미리 판정
             }
