@@ -26,7 +26,7 @@ int main(){
         bool check_bool = false;
         if (n == 0)
             break;
-        for (int i = 3; i <= n / 2; i++)
+        for (int i = 3; i < n; i++)
         {
             if(arr[i]){ // 소수가 아니라면 패스
                 continue;
