@@ -2,6 +2,12 @@
 #include <algorithm>
 #include <queue>
 
+
+// 문제를 이렇게 풀었지만 그냥 단순 브루프 포스를 통해서도 해결가능
+// https://velog.io/@sw801733/C-%EB%B0%B1%EC%A4%80-1107%EB%B2%88-%EB%A6%AC%EB%AA%A8%EC%BB%A8 참고자료
+// 그냥 0 ~ 1000000 까지의 채널을 모두 확인해도 시간초에는 충분히 가능함. 해당 채널을 각 숫자별로 가능한 채널이라면 횟수비교 아니라면 pass 하는 과정으로
+// 문제를 너무 꼬아서 푼 느낌이 강하네..
+
 using namespace std;
 
 int arr[10] = {0};
