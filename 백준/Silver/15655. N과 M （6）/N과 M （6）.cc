@@ -13,6 +13,7 @@ void rec(int cnt ,int size){
             cout << a << " ";
         }
         cout << "\n";
+        return;
     }
     for (int i = cnt; i < N;i++){
         answer.push_back(arr[i]);
