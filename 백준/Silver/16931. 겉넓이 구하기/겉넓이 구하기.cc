@@ -3,7 +3,7 @@
 #include <vector>
 
 using namespace std;
-
+//그냥 이전값보다 커질경우 값의 차만큼 더해주면 됨 겉넓이가 증가하는 경우는 이전값보다 클때밖에 없음
 int main(){
     ios::sync_with_stdio(false);
     cin.tie(NULL);
