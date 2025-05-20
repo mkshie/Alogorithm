@@ -12,7 +12,7 @@
 //출발지와 도착지가 같은 버스가 여러개 존재가 가능
 using namespace std;
 
-#define INF 999999999
+#define INF 1e9
 
 int N, M;
 int start, dest;
