@@ -13,9 +13,9 @@ int main(){
     int V, E;
     cin >> V >> E;
     vector<vector<int>> graph(V + 1, vector<int>(V + 1, INF));
-    for (int i = 1; i <= V;i++){
-        graph[i][i] = 0;
-    }
+    // for (int i = 1; i <= V;i++){
+    //     graph[i][i] = 0;
+    // }
     for (int i = 0; i < E;i++){
         int u, v, w;
         cin >> u >> v >> w;
@@ -32,11 +32,15 @@ int main(){
     }
 
     for (int i = 1; i <= V;i++){
-        for (int j = 1; j <= V;j++){
-            if(i==j) continue;
-            if(graph[i][j] != INF && graph[j][i] != INF){
-                answer = min(answer, graph[i][j] + graph[j][i]);
-            }
+        // for (int j = 1; j <= V;j++){
+        //     if(i==j) continue;
+        //     if(graph[i][j] != INF && graph[j][i] != INF){
+        //         answer = min(answer, graph[i][j] + graph[j][i]);
+        //     }
+        // }
+        if (graph[i][i] < answer)
+        {
+            answer = graph[i][i];
         }
     }
     if(answer ==INF)
