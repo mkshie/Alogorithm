@@ -52,12 +52,7 @@ int main()
             dq.pop_front();
         }
 
-        answer.push_back(dq.front().first);
-    }
-
-    for (int num : answer)
-    {
-        cout << num << " ";
+        cout << dq.front().first << " ";
     }
     cout << "\n";
 
