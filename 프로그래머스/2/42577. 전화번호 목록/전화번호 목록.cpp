@@ -1,25 +1,45 @@
 #include <string>
 #include <vector>
-#include <set>
+#include <unordered_set>
+#include <iostream>
+#include <algorithm>
 
 using namespace std;
 
+//풀었던 문제인데 기억이 안나네;
+//그냥 이정도 복잡도면 흠.. index 0 에 있는애들 이게 순서는 상관없는 거 같음
+//먼저 자기 전체를 넣어서 있는지 확인 후에 없으면 자기 자신을 크기순으로 잘게 잘라서 넣음
+//이거 반복하면 될듯?
+
+//처음에 간과한점 set 의 find 는 정렬형태라서 O(log N) 의 복잡도 즉 잦은 find 는 unordered_set 사용해야함
+
 bool solution(vector<string> phone_book) {
-    set<string> s;
-    for(string str : phone_book){
+    bool answer;
+    
+    unordered_set<string> s;
+    //그냥 먼저 set 에 다 넣고 이후에 하나씩 쪼개서 찾아볼까..?
+    
+    //sort(phone_book.rbegin() , phone_book.rend());
+    
+    for(string& str : phone_book){
         s.insert(str);
     }
-    for(auto it = s.begin(); it != s.end();it++){
-        string cur_str = *it; //현재 원소
-        auto next_it = next(it); // 다음 원소
-        if(next_it != s.end()){
-            string next_str = *next_it;
-            if(cur_str.compare(next_str.substr(0,cur_str.size()))==0)
-            {
-                return false;
+    
+    for(string& str : phone_book){
+        string cp ="";
+        for(int i=0; i<str.size();i++){
+            cp += str[i];
+            
+            if(cp != str && s.find(cp) != s.end()){
+                answer = false;
+                return answer;
             }
+            
         }
+        
     }
-    bool answer = true;
+    
+    answer = true;
+    
     return answer;
 }
