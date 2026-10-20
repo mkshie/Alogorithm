@@ -2,22 +2,20 @@ import java.util.*;
 
 class Solution {
     public int[] solution(int[] array, int[][] commands) {
-        
-        //array 에서 j 번째까지 자르고 정렬 후 k 번째에 있는 수 구하기.
         int[] answer = new int[commands.length];
         
-        for(int i = 0; i<commands.length; i++){
-            int[] arr = commands[i];
+        for(int i=0; i < commands.length ; i++){
+            List<Integer> list = new ArrayList<>();
             
-            int[] cp_array = Arrays.copyOfRange(array , arr[0] - 1 , arr[1]);
-            Arrays.sort(cp_array);
+            for(int j = commands[i][0]; j <= commands[i][1]; j++){
+                list.add(array[j - 1]);
+            }
             
-            // for(int k : cp_array)
-            //     System.out.println(k);
+            Collections.sort(list);
             
-            answer[i] = cp_array[arr[2] -1];
-            
+            answer[i] = list.get(commands[i][2] - 1);
         }
+        
         return answer;
     }
 }
