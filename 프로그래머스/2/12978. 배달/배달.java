@@ -1,82 +1,73 @@
 import java.util.*;
 
-//N 개의 마을로 이루어진 나라 존재
-//마을에는 1~N 까지 번호가 있고 도로마다 정해져있음.
+
+
 
 class Solution {
-    
-    long INF = Long.MAX_VALUE / 4;
+    static final int INF = Integer.MAX_VALUE;
+
+    class Edge{
+        
+        int to;
+        int cost;
+        
+        public Edge(int to , int cost){
+            this.to = to;
+            this.cost = cost;
+        }
+    }
     
     public int solution(int N, int[][] road, int K) {
+        int answer = 0;
         
-        int answer=0;
-        
-        List<int[]>[] graph = new ArrayList[N+1];
-        
-        //모두 추가해주기
-        for(int i=1; i<=N;i++){
-            graph[i] = new ArrayList<>();
-        }
-        
-        for(int[] info : road){
-            int from = info[0];
-            int to = info[1];
-            int dis = info[2];
-            
-            graph[from].add(new int[]{to , dis});
-            graph[to].add(new int[]{from ,dis});
-            
-        }
-        
-        
-        //마을의 거리는 모두 크게 해둘예정
-        long[] dist = new long[N+1];       
+        int[] dist = new int[N];
         
         Arrays.fill(dist , INF);
         
-        //최소힙
-        PriorityQueue<long[]> pq = new PriorityQueue<>((a,b) -> Long.compare(a[0] , b[0]));
-        //[거리 , 현재 node]
+        List<List<Edge>> list = new ArrayList<>();
         
-        pq.offer(new long[]{0L,1L}); //초기값.
-        dist[1] = 0;
+        for(int i=0; i<N;i++){
+            list.add(new ArrayList<>());
+        }
+        
+        for(int i=0; i<road.length; i++){
+            int start = road[i][0] - 1;
+            int to  = road[i][1] - 1;
+            int cost = road[i][2];
+            
+            list.get(start).add(new Edge(to , cost));
+            list.get(to).add(new Edge(start , cost));
+        }
+        
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a,b) -> Integer.compare(a[1] , b[1]));
+        dist[0] = 0;
+        pq.offer(new int[]{0,0}); //node , cost
         
         while(!pq.isEmpty()){
+            int[] cur = pq.poll();
             
-            long[] cur = pq.poll();
+            int cur_node = cur[0];
+            int cur_cost = cur[1];
             
-            long dis = cur[0];
-            //int 지워도 되는지 확인해보기
-            int cur_node = (int) cur[1];
+            if(dist[cur_node] < cur_cost) continue;
             
-            if(dis > dist[cur_node]){
-                continue;
-            }
-            
-            for(int[] info : graph[cur_node]){
+            for(int i=0; i<list.get(cur_node).size(); i++){
+                Edge next = list.get(cur_node).get(i);
                 
-                int next_dis = info[1];
-                int next_node = info[0];
+                int next_node = next.to;
+                int next_cost = next.cost;
                 
-                long next_dis_total = dis + next_dis;
-                
-                if(next_dis_total < dist[next_node]){
-                    dist[next_node] = next_dis_total;
-                    pq.offer(new long[]{next_dis_total , next_node});
+                if(cur_cost + next_cost < dist[next_node]){
+                    dist[next_node] = cur_cost + next_cost;
+                    pq.offer(new int[]{next_node , cur_cost + next_cost});
                 }
             }
-            
+             
         }
         
-        for(long dis : dist){
-            if(dis <= K){
-                answer++;
-            }
+        for(int num : dist){
+            if(num <= K) answer++;
         }
-        
-        //다익스트라로 문제를 풀어보자
-        
-        
         return answer;
     }
 }
