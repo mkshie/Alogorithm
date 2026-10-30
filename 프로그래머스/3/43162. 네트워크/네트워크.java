@@ -26,7 +26,7 @@ class Solution {
             //방문한적 없다면
             if(visited[i] == 0){
                 answer++;
-                
+                visited[i] = 1;
                 q.offer(i);
                 
                 while(!q.isEmpty()){
